@@ -2,11 +2,11 @@ import sys
 import youtube_dl
 import os
 import time
-from gmusicapi import Webclient														###***********************************###
-from gmusicapi import Mobileclient														###***********************************###
+from gmusicapi import Webclient															
+from gmusicapi import Mobileclient														
 import vlc
 import urllib
-import urllib2																			###***********************************###
+import urllib2				
 
 global p
 global username
@@ -28,8 +28,8 @@ replay = False
 username = ""
 device_id  = '38a75eb25600784d'
 successLogin = False
-web_client = Webclient()																###***********************************###
-mobile_client = Mobileclient()															###***********************************###
+web_client = Webclient()											
+mobile_client = Mobileclient()													
 
 #status 1=play 0=pause
 #service 1=Gp 0=YT 2=SPOT
@@ -39,8 +39,7 @@ def main():
 	global prevStatus
 	global replay
 	global uniqueID
-	#response = urllib.request.urlopen('http://104.236.120.99//api/player.php?id='+str(PlayerID)+'&next='+str(nextSong))###***********************************###
-	response = urllib2.urlopen('http://104.236.120.99//api/player.php?id='+str(PlayerID)+'&next='+str(nextSong))###***********************************###
+	response = urllib2.urlopen('http://104.236.120.99//api/player.php?id='+str(PlayerID)+'&next='+str(nextSong))
 	html = response.read()
 	arr = html.decode("utf-8").split("~~")
 	dataBaseID = arr[0]
@@ -100,7 +99,6 @@ def playGoogleSong(songID,user,password):
 	if((user != username)or(successLogin!=True)):
 		logout()
 		try:																	
-	#		raise("I know python")																			###***********************************###
 			logged_in = web_client.login(user, password)
 			logged_in = mobile_client.login(user, password)
 			successLogin = True
@@ -115,7 +113,7 @@ def playGoogleSong(songID,user,password):
 			print("Unexpected error:", sys.exc_info()[0])
 			sendNextSong()
 	if((successLogin or logged_in) == True):
-		p.pause()
+		p.set_pause(True)
 		stream_url = mobile_client.get_stream_url(songID, device_id)
 		p.set_mrl(stream_url)
 		p.play()
@@ -123,7 +121,6 @@ def playGoogleSong(songID,user,password):
 
 def logout():
 	try:
-	#	raise("I know python")																			###***********************************###
 		web_client.logout()
 		mobile_client.logout()
 		print("logged out")
@@ -144,9 +141,7 @@ def playYTSong(songID):
 	if(currentSongID!=songID):
 		currentSongID=songID
 		down(songID)
-	#sendNextSong()																			###***********************************###
-	#return																					###***********************************###
-	p.pause()
+	p.set_pause(True)
 	p.set_mrl("youtube.mp3")
 	p.play()
 	print("Playing a song from YT")
