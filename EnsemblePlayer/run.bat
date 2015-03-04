@@ -1,1 +1,1 @@
-python PlayerExecuteThomas.py
+python PlayerExecute.py
