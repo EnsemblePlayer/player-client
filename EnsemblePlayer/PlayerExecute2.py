@@ -2,81 +2,72 @@ import sys
 import youtube_dl
 import os
 import time
-from gmusicapi import Webclient															
-from gmusicapi import Mobileclient
 import urllib2
 import urllib
 import warnings
-import pygame.mixer				
+import pygame.mixer
 
-global p
-global username
-global successLogin
 global replay
 global prevStatus
 global nextSong
 global currentSongID
-global device_id
 global uniqueID
+global service
+global status
+global dataBaseID
+global streampath
+global oddEven
+global songName
+global artist
+global volume
 #device
 PlayerID=1
 nextSong=0
 prevStatus=-2
 currentSongID="0"
 uniqueID=0
-replay = False
-#Google
-username = ""
-device_id  = '-1'
-successLogin = False
-web_client = Webclient()											
-mobile_client = Mobileclient()													
-
+replay = False	
+oddEven = False
+volume = .5;						
 #status 1=play 0=pause
 #service 1=Gp 0=YT 2=SPOT
 
-def main():
-	global nextSong	
-	global prevStatus
+def main():	
+	global nextSong
 	global replay
+	global prevStatus
 	global uniqueID
-	response = urllib2.urlopen('http://ensembleplayer.me//api/player.php?id='+str(PlayerID)+'&next='+str(nextSong))
-	html = response.read()
-	arr = html.decode("utf-8").split("~~")
-	dataBaseID = arr[0]
-	serviceType = arr[1]
-	user = arr[2]
-	password = arr[3]
-	shouldBePlayingID = arr[4]
-	status = arr[5]
+	
+	serverQuery(PlayerID,nextSong)
+	
 	if((nextSong == 1)and(uniqueID!=dataBaseID)):
 		nextSong=0
 	if(int(status)==1):
 		if(replay):
-			p.set_pause(False)
+			pygame.mixer.music.unpause()
 			replay = False
 			if(int(prevStatus)!=int(status)):
 				print("Resuming play")
 				prevStatus=status
-		if(int(serviceType) == 1):
+		if(int(service) == 1):
 			if dataBaseID == uniqueID:
 				pass
 			else:
 				print("Type=Google")
-				playGoogleSong(shouldBePlayingID,user,password)
+				playGoogleSong(shouldBePlayingID,streampath,volume)
 				uniqueID=dataBaseID
-		elif(int(serviceType) == 0):
+		elif(int(service) == 0):
 			if dataBaseID == uniqueID:
 				pass
 			else:
 				print("Type=YT")
-				playYTSong(shouldBePlayingID)
+				playYTSong(shouldBePlayingID,volume)
 				uniqueID=dataBaseID
-		elif(serviceType == 2):
+		elif(service == 2):
 			print("Type=SPOT")
-		elif(int(serviceType) == -1):
+		elif(int(service) == -1):
 			logout()
-			p.set_pause(False)
+			pygame.mixer.music.unpause()
 		else:
 			print("server error or unrecognised")
 	elif(int(status) == 0):
@@ -86,72 +77,71 @@ def main():
 			prevStatus=status
 		replay = True;
 	else:
-		p.set_pause(True)
+		pygame.mixer.music.pause()
 		if(int(prevStatus)!=int(status)):
 			print("Currently paused For Good")
 			prevStatus=status
-		
-def playGoogleSong(songID,user,password):
-	global currentSongID
-	global successLogin
-	global username
-	global device_id
-	currentSongID=songID
-	if((user != username)or(successLogin!=True)):
-		logout()
-		try:																	
-			logged_in = web_client.login(user, password)
-			logged_in = mobile_client.login(user, password)
-			successLogin = True
-			username = user
-			devices = web_client.get_registered_devices()
-			valid = [device['id'][2:] + " (" + device['model'] + ")" for device in devices if device['type'] == 'PHONE']
-			device_id = valid[0].split(' ', 1)[0]
-		except:
-			logged_in = False
-			successLogin = False
-			print("LoginFailed")
-			print("Unexpected error:", sys.exc_info()[0])
-			sendNextSong()
-	if((successLogin or logged_in) == True):
-		p.set_pause(True)
-		stream_url = mobile_client.get_stream_url(songID, device_id)
-		p.set_mrl(stream_url)
-		p.play()
-		print("Playing a song from Google")
 
-def logout():
+def serverQuery(id,nextSong):
+	#{"entryId":185,"service":0,"username":null,"password":null,"apiId":0,"status":1}
 	try:
-		web_client.logout()
-		mobile_client.logout()
-		print("logged out")
+		response = urllib2.urlopen('http://198.143.136.133//api/player.php?id='+str(id)+'&next='+str(nextSong))
 	except:
-		print("error logging out")
+		print("Error: Server didn't respond?")
+	j_obj = json.load(response)
+	global service
+	global status
+	global dataBaseID
+	global streampath
+	global songName
+	global artist
+	service = j_obj['service']
+	status = j_obj['status']
+	dataBaseID = j_obj['entryId']
+	streampath = j_obj['url']
+	songName = j_obj['songName']
+	artist = j_obj['artist']
+			
+def playGoogleSong(songID,path,vol):	
+	global currentSongID
+	currentSongID=songID
+	fileName = cleanFile()
+	urllib.urlretrieve(path,fileName)
+	playSong(fileName,vol)
+	print ("Google: Now Playing " + songName + " by " + artist)
 		
 def sendNextSong():
 	global nextSong
 	print("Sending nextSong to DataBase")
 	nextSong = 1
-	
-def SongFinished(self, data):
-	print("Song Finished")
-	sendNextSong()
 
-def playYTSong(songID):
+def cleanFile():
+	global oddEven
+	fileName = "even.mp3"
+	if(oddEven):
+		fileName = "odd.mp3"
+	oddEven= not oddEven
+	try:
+		os.remove(fileName)
+	except:
+		pass
+	return fileName
+	
+def playSong(song,vol):
+	pygame.mixer.music.load(song)
+	pygame.mixer.music.set_volume(vol)
+	pygame.mixer.music.play()
+
+def playYTSong(songID,vol):
 	global currentSongID
 	if(currentSongID!=songID):
 		currentSongID=songID
-		down(songID)
-	p.set_pause(True)
-	p.set_mrl("youtube.mp3")
-	p.play()
-	print("Playing a song from YT")
+		fileName = cleanFile()
+		down(songID,fileName)
+	playSong(fileName,vol)
+	print("YT: Now Playing " + songName + " by " + artist")
 	
-def down(a):
-	try:
-		os.remove("youtube.mp3")
-	except:
-		pass
+def down(a,fileName):
 	try:
 		os.remove(a)
 	except:
@@ -171,18 +161,11 @@ def down(a):
 			}
 		with youtube_dl.YoutubeDL(options) as ydl:
 			ydl.download([b])
-		os.rename(a, "youtube.mp3")
+		os.rename(a, fileName)
 	except:
 		sendNextSong()
 
 if(__name__ == "__main__"):
 	warnings.filterwarnings("ignore")
-	global p
-	
-	vlc_instance = vlc.Instance()
-	p = vlc_instance.media_player_new()
-	vlc_events = p.event_manager()
-	vlc_events.event_attach(vlc.EventType.MediaPlayerEndReached, SongFinished, 1)
-	
 	while True:
 		main()

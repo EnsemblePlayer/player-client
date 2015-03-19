@@ -15,6 +15,8 @@ password = 'pcbwoxdlptkennby'
 device_id = '38a75eb25600784d'
 web_client = Webclient()
 mobile_client = Mobileclient()
+global oddEven
+oddEven = False
 
 def main():
 	while True:
@@ -32,21 +34,28 @@ def checkCred():
 	return (logged_in and log_in)
 	
 def getSong():
+	global oddEven
+	
 	song_name = raw_input("Song title: ")
-
 	results = mobile_client.search_all_access(song_name, 1)
 	song = results['song_hits'][0]
 	song_id = song['track']['nid']
 	song_name = song['track']['title']
 	song_artist = song['track']['artist']
 	stream_url = mobile_client.get_stream_url(song_id, device_id)
-		
-	urllib.urlretrieve (stream_url, "mp3.mp3")
 	print ("Now Playing " + song_name + " by " + song_artist)
-	return "mp3.mp3"
 	
-		
-		
+	end = "even.mp3"
+	if(oddEven):
+		end = "odd.mp3"
+	oddEven= not oddEven
+	try:
+		os.remove(end)
+	except:
+		pass
+	urllib.urlretrieve(stream_url, end)
+	return end
+	
 if(__name__ == "__main__"):
 	pygame.mixer.init(22050,-16,2,2048)
 	checkCred()
