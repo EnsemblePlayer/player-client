@@ -1,0 +1,832 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+  
+  <title>The mixer module, the sound object and the channel object</title>
+</head>
+
+
+<body>
+
+<big><big><span style="font-weight: bold;">The
+mixer module, the sound object and
+the channel object</span></big></big><br>
+
+<div style="text-align: justify;"><br>
+
+<big>The <span style="font-style: italic;">cdrom</span>
+module and the
+<span style="font-style: italic;">mixer.music</span>
+module are just
+appetizers. The real job in pygame gets done with the <span style="font-style: italic;">mixer</span>
+module together with the <span style="font-style: italic;">sound</span>
+and <span style="font-style: italic;">channel</span>
+objects. Declared sound
+files (mostly <span style="font-style: italic;">.wav</span>
+files)
+become sound objects which can be played in various (up to 8) channels.
+As we all know, digital sound files have some very basic properties.
+These are the sampling rate, </big><big>the
+sampling size, </big><big>the
+signedness and the number of channels.</big><br>
+
+<big></big><br>
+
+<big>- <span style="text-decoration: underline;">The
+sampling rate</span>
+is the number of times per second that the sound is sampled. Common
+sampling rates are 8000 Hz for telephone sound, 11025 Hz, 22050 for
+radio sound, 32000, 44100 for CD music and more. See also <a target="_blank" href="http://en.wikipedia.org/wiki/Sampling_rate">wikipedia</a>.</big><br>
+
+<big>
+- <span style="text-decoration: underline;">The
+sample size</span> is
+actually the sound resolution. It is either 8 or 16 bits which means
+that the sound 'snapshot' is sampled 256 or 65535 times respectively.</big><br>
+
+<big></big><big>-
+<span style="text-decoration: underline;">The
+signedness</span>
+of
+the sample size is used internally by the computer. </big><big>For
+<span style="font-style: italic;">.wav</span>
+files
+8-bit samples are unsigned and 16-bit samples are signed integers. See
+also <a target="_blank" href="http://ccrma.stanford.edu/courses/422/projects/WaveFormat/">Microsoft
+WAVE soundfile format</a>.</big><br>
+
+<big>- <span style="text-decoration: underline;">The number of
+channels</span>
+determine if the sound file is monaural or stereophonic.</big><br>
+
+<big></big><br>
+
+<big>A very good tutorial about digital sound can be found <a target="_blank" href="http://www.ling.upenn.edu/courses/ling538/Lecnotes/AudioData.html">here</a>.
+Now, in order to play a sound object (which is actually a sound file)
+we must initiate the mixer module using the above properties as
+its parameters plus one more which is the buffer size.</big><br>
+
+<big></big><br>
+
+<big>- <span style="text-decoration: underline;">The
+buffer size</span>
+determines the size of memory chunks used for storage and playback of
+samples. Its value must be a multiple of 1024. Small values lead to
+crackly sounds and large values decrease responsiveness of playback. A
+value of 4096 should be suitable for most games. See also <a target="_blank" href="http://gpwiki.org/index.php/C:Playing_a_WAV_Sound_File_With_SDL_mixer">The
+Game Programming Wiki</a>.</big><br>
+
+<big></big><br>
+
+<big>So let us now assume that we have a <span style="font-style: italic;">.wav</span>
+file whose properties are 11025 sampling rate, +8-bit sample size
+and monaural. It isn't difficult to find such file either. Try the <span style="font-style: italic;">C:\Windows\Media</span>
+directory.
+Right click on the media files to see their properties. After you find
+one (e.g. ringin.wav), make a copy of it inside the <span style="font-style: italic;">C:\Python2x\data</span>
+directory.</big><br>
+
+<big></big><br>
+
+<big>We also tested our machine and found out that the desired buffer
+size
+is 4096. Therefore we write:</big><br>
+
+<big><span style="font-family: Courier;">&gt;&gt;&gt;
+<span style="color: rgb(255, 153, 0);">import</span>
+os, pygame.mixer</span></big><br>
+
+<big><span style="font-family: Courier;">&gt;&gt;&gt;
+pygame.mixer.init(11025,8,1,4096)<br>
+
+</span></big><big><br>
+
+<span style="font-family: Courier;"></span></big><big>Next we need to
+create a sound object:</big><br>
+
+<big><span style="font-family: Courier;">&gt;&gt;&gt; file =
+os.path.join(<span style="color: rgb(51, 204, 0);">'data','ringin.wav'</span>)<br>
+
+</span></big><big><span style="font-family: Courier;">&gt;&gt;&gt;
+a =
+pygame.mixer.Sound(file)</span></big><br>
+
+<big></big><br>
+
+<big>And finally:</big><br>
+
+<big><span style="font-family: Courier;">&gt;&gt;&gt;
+a.play()</span></big><br>
+
+<big><span style="font-family: Courier;"><span style="color: rgb(51, 51, 255);">&lt;Channel
+object at
+0x008AE190&gt;</span></span></big><br>
+
+<big><span style="font-family: Courier;"></span>Each time you call the <span style="font-family: Courier;">play()</span>
+method, you get a channel object
+in return. </big><br>
+
+<big></big><br>
+
+<big>Sound objects can be either <span style="font-style: italic;">.wav</span>
+files or God knows how many other file formats (the <span style="font-style: italic;">.ogg</span>
+files work too). Unless you
+have a specific reason not to use <span style="font-style: italic;">.wav</span>
+files, I think you should stick with them. Also it is best if your
+sound files have ALL the same properties. That way they won't be
+resampled to match the mixer's initialization order each time you play
+them. See also the pygame.mixer doc for this.<br>
+
+<br>
+
+</big><big>The channel object represents a "line" of music. It is NOT a
+channel as
+in mono-stereo. It is a channel as in a mixer. The pygame documentation
+covers the topic completely and I really don't have anything to add
+here. <br>
+
+<br style="font-style: italic; font-weight: bold;">
+
+<span style="font-style: italic; font-weight: bold;">Program 03.py<br>
+
+<span style="font-weight: bold;"><span style="font-style: italic;"></span></span></span>The
+following program is a demonstration of the channel objects.<span style="font-style: italic; font-weight: bold;"><span style="font-weight: bold;"><span style="font-style: italic;"></span></span><br>
+
+</span></big></div>
+
+<br>
+
+<div style="text-align: justify;">
+<table style="text-align: left; width: 100%; font-family: courier;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="vertical-align: top;">
+      
+      <div style="text-align: right;"><font size="+1">1<br>
+
+2<br>
+
+3<br>
+
+4<br>
+
+5<br>
+
+6<br>
+
+7<br>
+
+8<br>
+
+9<br>
+
+10<br>
+
+11<br>
+
+12<br>
+
+13<br>
+
+14<br>
+
+15<br>
+
+16<br>
+
+17<br>
+
+18<br>
+
+19<br>
+
+20<br>
+
+21<br>
+
+22<br>
+
+23<br>
+
+24<br>
+
+25<br>
+
+26<br>
+
+27<br>
+
+28<br>
+
+29<br>
+
+30<br>
+
+31<br>
+
+32<br>
+
+33<br>
+
+34<br>
+
+35<br>
+
+36<br>
+
+37<br>
+
+38<br>
+
+39<br>
+
+40<br>
+
+41<br>
+
+42<br>
+
+43<br>
+
+44<br>
+
+45<br>
+
+46<br>
+
+47<br>
+
+48<br>
+
+49<br>
+
+50<br>
+
+51<br>
+
+52<br>
+
+53<br>
+
+54<br>
+
+55<br>
+
+56<br>
+
+57<br>
+
+58<br>
+
+59<br>
+
+60<br>
+
+61<br>
+
+62<br>
+
+63<br>
+
+64<br>
+
+65<br>
+
+66<br>
+
+67<br>
+
+68<br>
+
+69<br>
+
+70<br>
+
+71<br>
+
+72<br>
+
+73<br>
+
+74<br>
+
+75<br>
+
+76<br>
+
+77<br>
+
+78<br>
+
+79<br>
+
+80<br>
+
+81<br>
+
+82<br>
+
+83<br>
+
+84<br>
+
+85<br>
+
+86<br>
+
+87<br>
+
+88<br>
+
+89<br>
+
+90<br>
+
+91<br>
+
+92<br>
+
+93<br>
+
+94<br>
+
+95<br>
+
+96<br>
+
+97<br>
+
+98<br>
+
+99<br>
+
+100<br>
+
+101<br>
+
+102<br>
+
+103<br>
+
+104<br>
+
+105<br>
+
+106<br>
+
+107<br>
+
+108<br>
+
+109<br>
+
+110<br>
+
+111<br>
+
+112<br>
+
+113<br>
+
+114<br>
+
+115<br>
+
+116<br>
+
+117<br>
+
+118<br>
+
+119<br>
+
+120<br>
+
+121<br>
+
+123<br>
+
+124<br>
+
+125<br>
+
+126<br>
+
+127<br>
+
+128<br>
+
+129<br>
+
+130<br>
+
+      </font> </div>
+
+      </td>
+
+      <td style="vertical-align: top;"><font size="+1"><span style="color: rgb(255, 0, 0);"># Pygame_notes
+03.py</span><br style="color: rgb(255, 0, 0);">
+
+      <span style="color: rgb(255, 0, 0);"># All
+bird sounds are copyrighted by Alberto Masi - www.scricciolo.com</span><br style="color: rgb(255, 0, 0);">
+
+      <br>
+
+      <span style="color: rgb(255, 153, 0);">import</span> os,
+pygame.mixer, pygame.time<br>
+
+      <br>
+
+pygame.mixer.init(22050,8,1,2048)<br>
+
+      <br>
+
+totaltime = 0<br>
+
+      <br>
+
+f1 = 0<br>
+
+f2 = 0<br>
+
+f3 = 0<br>
+
+f4 = 0<br>
+
+f5 = 0<br>
+
+f6 = 0<br>
+
+f7 = 0<br>
+
+f8 = 0<br>
+
+      <br>
+
+a = os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'Upupa.wav'</span>) <span style="color: rgb(255, 0, 0);"># 1/8 = 220 milisecs</span><br>
+
+b = os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'Bubo.wav'</span>)<br>
+
+c = os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'Cuculus.wav'</span>)<br>
+
+d = os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'Otus.wav'</span>)<br>
+
+e = os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'Chersophilus.wav'</span>)<br>
+
+f = os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'Parus.wav'</span>)<br>
+
+g = os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'Gavia.wav'</span>)<br>
+
+h = os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'Columba.wav'</span>)<br>
+
+i = os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'Gavia2.wav'</span>)<br>
+
+      <br>
+
+aa = pygame.mixer.Sound(a)<br>
+
+bb = pygame.mixer.Sound(b)<br>
+
+cc = pygame.mixer.Sound(c)<br>
+
+dd = pygame.mixer.Sound(d)<br>
+
+ee = pygame.mixer.Sound(e)<br>
+
+ff = pygame.mixer.Sound(f)<br>
+
+gg = pygame.mixer.Sound(g)<br>
+
+hh = pygame.mixer.Sound(h)<br>
+
+ii = pygame.mixer.Sound(i)<br>
+
+      <br>
+
+aaa = pygame.mixer.Channel(0)<br>
+
+bbb = pygame.mixer.Channel(1)<br>
+
+ccc = pygame.mixer.Channel(2)<br>
+
+ddd = pygame.mixer.Channel(3)<br>
+
+eee = pygame.mixer.Channel(4)<br>
+
+fff = pygame.mixer.Channel(5)<br>
+
+ggg = pygame.mixer.Channel(6)<br>
+
+hhh = pygame.mixer.Channel(7)<br>
+
+      <br>
+
+clock = pygame.time.Clock()<br>
+
+      <br>
+
+      <span style="color: rgb(255, 153, 0);">while</span> totaltime
+&lt; 70000:<br>
+
+      <br>
+
+&nbsp;&nbsp;&nbsp; totaltime
+= totaltime + clock.tick()<br>
+
+      <br>
+
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span>
+totaltime <span style="color: rgb(255, 153, 0);">in</span>
+[0,1760,3520,5280,7040,8800,10560,12320,14080,15840,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+17600,19360,21120,22880,24640,26400,28160,29920,31680,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+33440,35200,36960,38720,40480,42240,44000,45760,47520,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+52800,54560]:<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aaa.play(aa) <span style="color: rgb(255, 0, 0);"># Upupa</span><br>
+
+      <br>
+
+      <br>
+
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span>
+totaltime <span style="color: rgb(255, 153, 0);">in</span>
+[4180,11220,18260,25300,32340,39380,46420,53460]:<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+bbb.play(bb) <span style="color: rgb(255, 0, 0);"># Bubo</span><br>
+
+      <br>
+
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span>
+totaltime <span style="color: rgb(255, 153, 0);">in</span>
+[7920,9680,11440,13200,14960,16720,18480,20240,22000,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+23760,25520,27280,29040,30800,32560,34320,36080,37840,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+39600,41360,43120,44880,46640,48400,53680,55440]:<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ccc.play(cc) <span style="color: rgb(255, 0, 0);"># Cuculus</span><br>
+
+      <br>
+
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span>
+totaltime <span style="color: rgb(255, 153, 0);">in</span>
+[15620,17380,19140,20900,22660,24420,26180,27940,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+29700,31460,33220,34980,36740,38500,40260,42020,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+43780,45540,47300,49060,54340,56100]:<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ddd.play(dd) <span style="color: rgb(255, 0, 0);"># Otus</span><br>
+
+      <br>
+
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span>
+totaltime <span style="color: rgb(255, 153, 0);">in</span>
+[21780,25300,28820,32340,35860,39380,42900,46420,49940,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+53460]:<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+eee.play(ee) <span style="color: rgb(255, 0, 0);"># Chersophilus</span><br>
+
+      <br>
+
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span>
+totaltime <span style="color: rgb(255, 153, 0);">in</span>
+[28380,30140,31900,33660,35420,37180,38940,40700,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+42460,44220,45980,47740,53020,54780]:<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+fff.play(ff) <span style="color: rgb(255, 0, 0);"># Parus</span><br>
+
+      <span style="color: rgb(255, 0, 0);"></span><br>
+
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span>
+totaltime <span style="color: rgb(255, 153, 0);">in</span>
+[36300,38060,39820,41580,41580,43340,45100,46860,48620,\<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+53900,55660]:<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ggg.play(gg) <span style="color: rgb(255, 0, 0);"># Gavia</span><br>
+
+      <br>
+
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span>
+totaltime <span style="color: rgb(255, 153, 0);">in</span>
+[42680,46200,53240]:<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+hhh.play(hh) <span style="color: rgb(255, 0, 0);"># Columba<br>
+
+      <br>
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime <span style="color: rgb(255, 153, 0);">in</span> [57420]:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ggg.play(ii) <span style="color: rgb(255, 0, 0);"># Gavia2<br>
+
+      <br>
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime == 0 <span style="color: rgb(255, 153, 0);">and</span> f1 == 0:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'Channel 1............Upupa Epops'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+f1 = 1</span><br style="color: rgb(0, 0, 0);">
+
+      <br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime == 4180 <span style="color: rgb(255, 153, 0);">and</span> f2 == 0:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'</span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">Channel
+2</span></span></span></span></span></span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">..............Bubo
+bubo'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+f2 = 1</span><br style="color: rgb(0, 0, 0);">
+
+      <br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime == 7920 <span style="color: rgb(255, 153, 0);">and</span> f3 == 0:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'</span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">Channel
+3</span></span></span></span></span></span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">........Cuculus
+canorus'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+f3 = 1</span><br style="color: rgb(0, 0, 0);">
+
+      <br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime == 15620 <span style="color: rgb(255, 153, 0);">and</span> f4 == 0:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'</span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">Channel
+4</span></span></span></span></span></span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">.............Otus
+scops'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+f4 = 1</span><br style="color: rgb(0, 0, 0);">
+
+      <br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime == 21780 <span style="color: rgb(255, 153, 0);">and</span> f5 == 0:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'</span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">Channel
+5</span></span></span></span></span></span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">...Chersophilus
+duponti'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+f5 = 1</span><br style="color: rgb(0, 0, 0);">
+
+      <br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime == 28380 <span style="color: rgb(255, 153, 0);">and</span> f6 == 0:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'</span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">Channel
+6</span></span></span></span></span></span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">........Parus
+palustris'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+f6 = 1</span><br style="color: rgb(0, 0, 0);">
+
+      <br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime == 36300 <span style="color: rgb(255, 153, 0);">and</span> f7 == 0:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'</span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">Channel
+7</span></span></span></span></span></span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">............Gavia
+immer'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+f7 = 1</span><br style="color: rgb(0, 0, 0);">
+
+      <br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime == 42680 <span style="color: rgb(255, 153, 0);">and</span> f8 == 0:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'</span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">Channel
+8</span></span></span></span></span></span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">..........Columba
+livia'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+f8 = 1</span><br style="color: rgb(0, 0, 0);">
+
+      <br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">if</span> totaltime == 57420:</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'Channel 7............Gavia immer'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pygame.time.delay(3500)</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'</span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">Channel
+7....</span></span></span></span></span></span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">........Gavia
+immer'</span></span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pygame.time.delay(5000)</span><br style="color: rgb(0, 0, 0);">
+
+      <span style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">print</span><span style="color: rgb(51, 204, 0);">'</span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">Channel
+7....</span></span></span></span></span></span></span></span></span></span><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(255, 0, 0);"><span style="color: rgb(0, 0, 0);"><span style="color: rgb(51, 204, 0);">........Gavia
+immer'</span></span></span></span> </span></font> </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+<br>
+
+</div>
+
+<div style="text-align: justify;"><big><span style="font-style: italic; font-weight: bold;">Explanation</span><br style="font-style: italic; font-weight: bold;">
+
+Actually the above program is very very simple. It uses pygame.mixer's
+channels to play on each one of them the voice of a famous bird. </big><big>
+First we import the modules</big><big> and do the initialization while
+one variable and eight flags are created. We then create 9 sound
+objects (lines
+19-37). Next the eight channels are declared and a clock object is
+created. The clock object is exactly that: a clock. Here we use it to
+keep track of the time that has passed (line 48).<br>
+
+<br>
+
+Have you ever written any music? Lines 50 to 130 are <span style="font-family: Times New Roman;">something</span> like
+this.
+While the total time is lower than a certain amount of time (which we
+figure out) the computer checks for time entries and plays sound
+objects. It's really that simple. The weakness of this program is that
+there are a lot of <span style="color: rgb(255, 153, 0); font-family: courier;">if</span>
+statements inside the main loop. Which means that a certain sound could
+be skipped sometime; it is possible (I think). If the main loop was
+written in a
+more straightforward way like wait-play, wait-play, there wouldn't be
+such problem. But one could never understand a thing by reading the
+code. Anyway, by all means just listen to the song. Hope you like it.
+You can
+run it ONLY from your python path. Better NOT from the IDLE.<br>
+
+<br>
+
+There are a lot of links in this page. This can only mean one
+thing: I am no
+sound expert. I just gather information from the internet and put them
+together. If you think
+they are not right, please say so.<br>
+
+<br>
+
+<br>
+
+<br>
+
+</big>
+<div style="text-align: right;"><big><a href="The%20mixer%20music%20module.html">Back</a>&nbsp;&nbsp;&nbsp;
+<a href="Index.html">Up</a>&nbsp;&nbsp;&nbsp; <a href="Putting%20it%20all%20together.html">Next</a></big><br>
+
+</div>
+
+</div>
+
+</body>
+</html>

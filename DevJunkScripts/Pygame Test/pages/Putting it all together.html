@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+  
+  <title>Putting it all together</title>
+</head>
+
+
+<body>
+
+<big><big><span style="font-weight: bold;">Putting it all together</span></big></big>
+<div style="text-align: justify;"><br>
+
+<big></big><big><span style="font-weight: bold;">Q:</span> What about
+the music. Where do I put it?</big><br>
+
+<big><span style="font-weight: bold;">A:</span> Open the chimp.py </big><big>program,
+</big><big>that comes with the pygame distribution, for editing. Inside
+the <span style="font-family: Courier;"><span style="color: rgb(255, 153, 0);">def</span> <span style="color: rgb(51, 51, 255);">main</span>()</span> and under the <span style="font-family: Courier; color: rgb(255, 0, 0);">#Prepare Game
+Objects</span> section add these lines:</big><br>
+
+<big><span style="font-family: Courier; color: rgb(255, 0, 0);">#Prepare
+and play the music</span></big><br style="font-family: Courier;">
+
+<big><span style="font-family: Courier;">&nbsp;&nbsp;&nbsp; musicfile =
+os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'house_lo.wav'</span>)</span></big><br style="font-family: Courier;">
+
+<big><span style="font-family: Courier;">&nbsp;&nbsp;&nbsp;
+pygame.mixer.music.load(musicfile)</span></big><br style="font-family: Courier;">
+
+<big><span style="font-family: Courier;">&nbsp;&nbsp;&nbsp;
+pygame.mixer.music.play(-1)</span></big><br>
+
+<br>
+
+<big>There you have it. The famous chimp program with music. The
+command </big><big><span style="font-family: Courier;">pygame.mixer.music.play(-1)
+</span></big><big>will
+play the music infinitely. That's because of the -1 inside the
+parentheses.</big><br>
+
+<br>
+
+<big>Also there's another way. Again under the </big><big><span style="font-family: Courier; color: rgb(255, 0, 0);">#Prepare Game
+Objects</span> section add:</big><br>
+
+<big><span style="font-family: Courier; color: rgb(255, 0, 0);">#Prepare
+and play the music</span></big><br style="font-family: Courier;">
+
+<big><span style="font-family: Courier;">&nbsp;&nbsp;&nbsp; musicfile =
+os.path.join(<span style="color: rgb(51, 204, 0);">'data'</span>,<span style="color: rgb(51, 204, 0);">'house_lo.wav'</span>)</span></big><br style="font-family: Courier;">
+
+<big><span style="font-family: Courier;">&nbsp;&nbsp;&nbsp;
+pygame.mixer.music.load(musicfile)</span></big><br>
+
+<br>
+
+<big>And inside the <span style="font-family: Courier; color: rgb(255, 0, 0);">#Main Loop</span>
+of the </big><big><span style="font-family: Courier;"><span style="color: rgb(255, 153, 0);">def</span> <span style="color: rgb(51, 51, 255);">main</span>()</span></big><big>add
+the following line (indented 2 times):</big><br>
+
+<big><span style="font-family: Courier;"><span style="color: rgb(255, 153, 0);">if not</span>
+pygame.mixer.music.get_busy():pygame.mixer.music.play()</span></big><br>
+
+<br>
+
+<big>The above <span style="color: rgb(255, 153, 0); font-family: Courier;">if</span>
+statement will play infinitely.</big><br>
+
+<big></big>
+<div style="text-align: center;">-------<br>
+
+</div>
+
+<big><span style="font-weight: bold;"><br>
+
+Q:</span> Ok. What about the
+format of the music? What is it going to be? Is it going to be <span style="font-style: italic;">.mp3</span> or <span style="font-style: italic;">.ogg </span>? Or maybe plain <span style="font-style: italic;">.wav </span>?</big><br>
+
+<big><span style="font-weight: bold;">A:</span> That is also your
+decision to make. But remember:</big><br>
+
+<big>- <span style="font-style: italic;">.wav</span> files are not
+that suitable to become music objects because they are too big
+and therefore not so portable.</big><br>
+
+<big>- <span style="font-style: italic;">.mp3</span> files may be
+small and extremely clear to listen but mp3 is a proprietary codec.
+This means that when your game becomes a big success you'll have to pay
+money to the patent holders.</big><br>
+
+<big>- <span style="font-style: italic;">.ogg</span> files are the
+best choice for lossy compression. They have good sound quality yet
+they are patent-free.</big><br>
+
+<br>
+
+<big>Check out</big>&nbsp;<big><a href="http://www.gamehouse.com/gamedetails/?game=JewelQuest&amp;navpage=onlinegames&amp;webgame=true">Jewel
+Quest</a> which is a highly ranked professional puzzle game. It is
+written using the SDL library and all of its 70 audio </big><big>(2,14
+MB size) </big><big>files are <span style="font-style: italic;">.ogg</span>
+files.<br>
+
+</big>
+<big><span style="font-weight: bold;"></span></big>
+<div style="text-align: center;">-------<br>
+
+</div>
+
+<big><span style="font-weight: bold;"><br>
+
+Q:</span> What about the sound
+objects. Do they have to be <span style="font-style: italic;">.ogg</span>
+files too?<br>
+
+<span style="font-weight: bold;">A:</span> No, not at all. Keep them in
+the <span style="font-style: italic;">.wav</span> format. Since the
+'whiffs' and the 'oufs' and the 'tadas' are usually of small size,
+it doesn't really matter if they are not<span style="font-style: italic;"> .ogg</span>
+files.<br>
+
+</big>
+<div style="text-align: center;">-------<br>
+
+</div>
+
+<big><span style="font-weight: bold;"><br>
+
+Q:</span> How do I make my
+original <span style="font-style: italic;">.wav</span> files?<br>
+
+<span style="font-weight: bold;">A:</span> Now here is the juicy
+question. First you go to
+a fellow musician who has a synthesizer and tell him how you want your
+music and your sound effects. After the composing is done you record
+directly into the computer by using the sound
+recorder
+(Start, Programs, Accessories, Entertainment, Sound
+Recorder). The file format you will be recording is of course <span style="font-style: italic;">.wav</span>. Be sure that all the
+recordings share the same properties as described in the previous
+chapter. Afterward you can convert the music file from <span style="font-style: italic;">.wav</span> to <span style="font-style: italic;">.ogg</span>.<br>
+
+</big>
+<div style="text-align: center;">-------</div>
+
+<big><span style="font-weight: bold;"><br>
+
+Q:</span> How do I make my <span style="font-style: italic;">.ogg</span>
+files?<br>
+
+<span style="font-weight: bold;">A:</span> Grab the latest <a href="http://www.vorbis.com/files/1.0.1/windows/vorbis-tools-1.0.1-win32.zip">vorbis-tools</a>
+and get to work.<br>
+
+</big>
+<div style="text-align: center;">-------</div>
+
+<big><span style="font-weight: bold;"><br>
+
+Q:</span> Why don't you mention
+the <span style="font-style: italic;">.mid</span> format?<br>
+
+<span style="font-weight: bold;">A:</span> I know pretty much nothing
+about it. However if you are a music composer (as well as a programmer)
+then you might be interested. Consider that the way of maki</big><big>ng
+music as
+described by now, is one (I believe) of the many ways - not the one and
+only. MIDI files are digital notesheets and therefore very very small
+compared to a <span style="font-style: italic;">.wav</span> file. In
+fact they are no sound files at all. Their performance depends on the
+soundcard. Follow <a href="http://www.polyhedric.com/software/wavmaker/mid2wav.html">this</a>
+commercial link for a preview.<br>
+
+</big>
+<div style="text-align: center;">-------<br>
+
+</div>
+
+<big><span style="font-weight: bold;"><br>
+
+Q:</span> Have you ever written a game with pygame, having in mind what
+you say to us here?<br>
+
+<span style="font-weight: bold;">A:</span> Yes, as a matter of fact I
+did. It's
+called
+Seminar and you can download it&nbsp;from <a href="http://takira.freehosting.net/">here</a>. It's no top notch
+pygame code but I followed my sayings (or at least I tried). For
+starters I
+downloaded a pretty good piano instrumental from <a href="http://freesolopiano.com/music.html">here</a>. It's in mp3
+format, so I converted the mp3 to ogg using the oggenc tool (I think
+that is not legal but hey it's for non commercial use). I also set the
+sound quality to 0 so to reduce the size of the file. Then I payed a
+visit <a href="http://www.a1freesoundeffects.com">here</a>
+and downloaded a pop effect. And that's how I got my set of sounds. A
+rather dirty way. The orthodox way is described above. But if you don't
+have any time left...<br>
+
+<br>
+
+On to the code now I used <span style="font-family: courier;">pygame.mixer.pre_init(...)</span>
+just
+before the <span style="font-family: courier;">pygame.init()</span>.
+Very handy. Of course I could always write:<br>
+
+</big><big><span style="font-family: courier;">pygame.mixer.quit()</span><br style="font-family: courier;">
+
+<span style="font-family: courier;">pygame.mixer.init(...)<br>
+
+</span></big><big>after
+the </big><big><span style="font-family: courier;">pygame.init()</span>.<br>
+
+<span style="font-family: courier;"></span></big><big><span style="font-family: courier;"></span><br>
+
+Anyway. After that, I loaded the <span style="font-style: italic;">.ogg</span>
+file and played it. I wrote all these lines at the beginning of the
+program and outside of any
+function. The 'options' function gives you the right to stop the
+playback of the music. So what the 'main' function does is to check if
+you want music playback and if the music is being played. The pop
+effect is simpler. Every time the mouse gets clicked it also 'pops'.
+Except if you check so in the 'options' function.<br>
+
+<br>
+
+However, I want to mention another thing here: The piano instrumental
+file that I put in my game is 2.589 KB size for
+6:22
+minutes of pure
+piano music. The format of the file is <span style="font-style: italic;">.ogg</span>. The other day I downloaded
+Beethoven's 'Moonlight' sonata (from <a href="http://www.geocities.com/Paris/3486/">here</a> - great site by
+the way) which is pure piano too, this
+time in <span style="font-style: italic;">.mid</span> format. It is
+about 15 minutes long and its size is 70 KB. I played it on
+Winamp and it
+sounds very good. My audio device is CMedia 8738. The only problem is
+that when I play it with pygame (1.6.2), only one speaker works.
+Regardless of
+this problem I think that <span style="font-style: italic;">.mid</span>
+files are excellent choices if you want your music to be just piano.
+The reason is obvious: the size of the file is tiny yet the sound
+quality is still good.</big><br>
+
+<big><br>
+
+</big>
+<div style="text-align: right;"><big><a href="The%20mixer%20module,%20the%20sound%20object%20and%20the%20channel%20object.html">Back</a>&nbsp;&nbsp;&nbsp;
+<a href="Index.html">Up</a>&nbsp;&nbsp;&nbsp; <a href="Pygame%201_7.html">Next</a></big><br>
+
+</div>
+
+</div>
+
+</body>
+</html>

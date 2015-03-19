@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>The cdrom module and the CD object</title>
+</head>
+<body>
+<big style="font-weight: bold;"><big>The cdrom module and the CD object</big></big><br>
+<big><br>
+First, we import the module - we have to do that.<br>
+<span style="font-family: courier new;">&gt;&gt;&gt; <span
+ style="color: rgb(255, 153, 0);">import</span> pygame.cdrom</span><br>
+<br>
+Second, we initialize the module - we have to do that also.<br>
+<span style="font-family: courier new;">&gt;&gt;&gt; pygame.cdrom.init()</span><br>
+<br>
+Now we can find out how many cd-rom drives our computer has:<br>
+<span style="font-family: courier new;">&gt;&gt;&gt;
+pygame.cdrom.get_count()</span><br>
+<span style="font-family: courier new; color: rgb(0, 0, 238);">2</span><br>
+Wait a minute. My computer has a dvd-rom drive and a cdrw-drive. Oh I
+see. For pygame all the drives our computer has are cd-rom drives.<br>
+</big><big><br>
+To find out if the cdrom module is initialized we write:<br>
+<span style="font-family: courier new;">&gt;&gt;&gt;
+pygame.cdrom.get_init()<br>
+<span style="color: rgb(0, 0, 238);">1</span><br>
+</span>The above function will return 1 if true and 0 if false.<br>
+<br>
+And to uninitialize the cdrom module we write:<br>
+<span style="font-family: courier new;">&gt;&gt;&gt; pygame.cdrom.quit()</span></big><br>
+<div style="text-align: center;">-------
+</div>
+<big></big>
+<big><span style="font-weight: bold;">Q:</span> So what is the cdrom
+module good for?<br>
+<span style="font-weight: bold;">An:</span> Answer is that it is needed
+so to create a CD object.<br>
+<span style="font-weight: bold;"><br>
+Q:</span> And what is this CD object?<br>
+<span style="font-weight: bold;">An:</span> A CD object is an object </big><big>(like
+in object oriented programming) </big><big>that represents a cd-rom
+drive. <br>
+<br>
+<span style="font-weight: bold;">Q:</span> And why do you want to
+create a CD object?<br>
+<span style="font-weight: bold;">An:</span> Because you want to
+actually access the cd-rom drive in order to hear
+some music.<br>
+<br>
+Thus we write
+something like:<br>
+<span style="font-family: courier new;"></span></big><span
+ style="font-family: courier new;"><big><span
+ style="font-family: courier new;">&gt;&gt;&gt; pygame.cdrom.init()</span><br>
+</big></span><big><span style="font-family: courier new;">&gt;&gt;&gt;
+a = pygame.cdrom.CD(1)</span><br style="font-family: courier new;">
+<span style="font-family: Courier;">a</span> represents now the second
+cd-rom drive in my computer. If I wanted to
+access the first cd-rom drive in my computer or more likely if my
+computer had only one cd-rom drive, I would have to write:<br>
+</big><big><span style="font-family: courier new;">&gt;&gt;&gt;
+a = pygame.cdrom.CD(0)</span></big><br>
+<big>I think you get the picture.<br>
+<br>
+<span style="font-weight: bold;">Q:</span> <span
+ style="font-style: italic;">"OK you smart ass"</span> (you'd ask) <span
+ style="font-style: italic;">"can we tell which cd-rom drive is 0 and
+which cd-rom drive is 1?"</span><br>
+<span style="font-weight: bold;">An:</span> Answer is simple. We can't.
+We have
+to
+ask the computer which one's which. But we can also ask python:<br>
+<span style="font-family: courier new;">&gt;&gt;&gt; a.get_name()</span><br
+ style="font-family: courier new;">
+<span style="font-family: courier new; color: rgb(0, 0, 238);">'D:\\'</span><br>
+</big><big>And we can always ask back which cd-rom drive
+is represented by <span style="font-family: Courier;">a</span>:<br>
+<span style="font-family: courier new;">&gt;&gt;&gt; a.get_id()</span><br
+ style="font-family: courier new;">
+<span style="font-family: courier new; color: rgb(0, 0, 238);">0</span><br>
+<br>
+To access the rest of the functions the CD object provides, we have to
+initialize it. In our case we write:<br>
+<span style="font-family: courier new;">&gt;&gt;&gt; a.init()</span><br>
+Now we can listen to some music. Put an audio CD in the cd-rom drive
+you just initialized and type something like:<br>
+<span style="font-family: courier new;">&gt;&gt;&gt; a.play(0)</span><br>
+And it actually plays it! It's not a miracle but it is python and
+pygame playing a CD. I mean, think about it!<br>
+The 0 inside the parentheses stands for the first track of our audio
+CD. Remember: only audio tracks. That means no mp3 :-(<br>
+Well, at least for the moment.<br>
+<br>
+Check out for yourself the other methods of the CD object. They are
+easy to understand and also well referenced in the pygame
+documentation. You do have the <a
+ href="http://www.pygame.org/docs/index.html">pygame documentation</a>
+don't you?<br>
+<br>
+<span style="font-style: italic; font-weight: bold;">Program 01.py</span><br>
+I (still) haven't found a method that plays a whole CD. You know,
+something
+like <span style="font-family: courier;">a.play_whole_CD()</span></big><big>.
+I am sure there is one but I can't see it. So the
+following script does this job (in a more sophisticated way :-)<br>
+<br>
+</big>
+<table cellspacing="2" cellpadding="2" border="1"
+ style="text-align: left; background-color: rgb(255, 255, 255); width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; text-align: right;"><big><span
+ style="font-family: courier;">1</span><br style="font-family: courier;">
+      <span style="font-family: courier;">2</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">3</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">4</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">5</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">6</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">7</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">8</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">9</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">10</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">11</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">12</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">13</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">14</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">15</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">16<br>
+17<br>
+18<br style="font-family: courier;">
+      </span> <span style="font-family: courier;"></span></big></td>
+      <td style="vertical-align: top;"><big><span
+ style="font-family: courier;"><span style="color: rgb(255, 153, 0);"><span
+ style="color: rgb(204, 0, 0);"># Pygame_notes 01.py</span><br>
+      <br>
+import</span>
+pygame.cdrom</span><br style="font-family: courier;">
+      <span style="font-family: courier;">pygame.cdrom.init()</span><br
+ style="font-family: courier;">
+      <br style="font-family: courier;">
+      <span style="font-family: courier;">a = pygame.cdrom.CD(0)</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">a.init()</span><br
+ style="font-family: courier;">
+      <br style="font-family: courier;">
+      <span style="font-family: courier;">n = a.get_numtracks()</span><br
+ style="font-family: courier;">
+      <br style="font-family: courier;">
+      <span style="font-family: courier;"><span
+ style="color: rgb(255, 153, 0);">for</span> c <span
+ style="color: rgb(255, 153, 0);">in</span> range(n):</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">&nbsp;&nbsp;&nbsp; a.play(c)</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">while</span> a.get_busy():</span><br
+ style="font-family: courier;">
+      </big><big style="font-family: courier;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">pass</span></big><big><span
+ style="font-family: courier;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-family: courier;">
+      <span style="font-family: courier;"></span><span
+ style="font-family: courier;"><br>
+a.quit()</span><br style="font-family: courier;">
+      <span style="font-family: courier;">a = None</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;">pygame.cdrom.quit()</span><br
+ style="font-family: courier;">
+      <span style="font-family: courier;"></span></big></td>
+    </tr>
+  </tbody>
+</table>
+<big><br>
+<span style="font-style: italic; font-weight: bold;">Explanation</span><br
+ style="font-style: italic; font-weight: bold;">
+I really don't think there is any need for explanation here except that
+if we omit lines 13 and 14, python will only play the last track of the
+CD.<br>
+</big><big>If you want just to check out this program<small> <big>or
+check out a CD</big></small>, be sure that
+line 12 becomes: <span style="font-family: courier;">a.play(c,0,5)</span>.
+That way you will only hear the first five seconds of every track and
+not the whole CD.</big><br>
+<big>Also be sure to run this program from the IDLE.</big><big>
+If you decide to quit before
+the CD finishes, it's best to manually uninitialize (lines 16-18)
+after the Ctrl-C.<br>
+<br>
+<br>
+<br>
+</big>
+<div style="text-align: right;"><big><a href="Introduction.html">Back</a>&nbsp;&nbsp;&nbsp;
+<a href="Index.html">Up</a>&nbsp;&nbsp;&nbsp; <a
+ href="The%20mixer%20music%20module.html">Next</a></big><br>
+</div>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=iso-8859-1">
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>The mixer music module</title>
+</head>
+<body>
+<big><font style="font-weight: bold;" size="+1"><big>The mixer.music
+module</big></font></big>
+<div style="text-align: justify;"><br>
+<font size="+1">Who said that pygame doesn't play music? I did? Well, I
+lied.
+With the 'mixer.music' module all kinds of music can be played. </font><font
+ size="+1">First we import the module. But we can't import it the
+usual
+way:</font><br>
+<big><big><big><font size="-2"><big><big><big><span
+ style="font-family: courier;">&gt;&gt;&gt; <span
+ style="color: rgb(255, 153, 0);">import</span> pygame.mixer.music</span></big></big></big></font></big></big></big><small>
+<font size="+1"><br style="font-family: courier;">
+<br style="font-family: courier;">
+<span style="font-family: courier; color: rgb(255, 0, 0);">Traceback
+(most
+recent call last):</span><br
+ style="font-family: courier; color: rgb(255, 0, 0);">
+<span style="font-family: courier; color: rgb(255, 0, 0);">&nbsp; File
+"&lt;pyshell#7&gt;", line 1, in -toplevel-</span><br
+ style="font-family: courier; color: rgb(255, 0, 0);">
+<span style="font-family: courier; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;
+import
+pygame.mixer.music</span><br
+ style="font-family: courier; color: rgb(255, 0, 0);">
+<span style="font-family: courier; color: rgb(255, 0, 0);">ImportError:
+No
+module named music</span><br>
+<br>
+We have to import the 'mixer' module instead. These two modules, the <span
+ style="font-style: italic;">'mixer.music'</span> module and the <span
+ style="font-style: italic;">'mixer'</span> module are very closely
+tied
+together as the pygame documentation mentions. So we:<br>
+<span style="font-family: courier;">&gt;&gt;&gt; <span
+ style="color: rgb(255, 153, 0);">import</span> pygame.mixer</span><br>
+<br>
+Next we need to initialize this module. Try:<br>
+<span style="font-family: courier;">&gt;&gt;&gt;
+pygame.mixer.init(22050,-16,2,2048)</span><br>
+<span style="font-family: courier;"><span
+ style="font-family: times new roman;">We will discuss the numbers
+inside the
+parentheses in a later chapter.</span></span><br
+ style="font-family: times new roman;">
+<span style="font-family: courier;"></span><span
+ style="font-family: times new roman;"></span><br>
+<small>
+<span style="font-family: times new roman;"><big>Now we need some
+music. Pygame supports many formats. </big></span></small></font></small><small><font
+ size="+1"><small><span style="font-family: times new roman;"><big>Either
+we have<span style="font-style: italic;"> 'wav'</span>, <span
+ style="font-style: italic;">'mp3'</span>, <span
+ style="font-style: italic;">'ogg'</span><span
+ style="font-style: italic;"></span> or <a
+ href="http://jcatki.no-ip.org/SDL_mixer/SDL_mixer.html#SEC2">other</a>,
+pygame
+will come
+clean. Of course the commercial audio CD's are not supported via
+this
+module.
+This
+means that you'll have to use the cdrom module and the CD object to
+listen to
+an audio CD, but you already know that.</big></span></small><br>
+<span style="font-family: times new roman;"></span><br>
+<span style="font-family: times new roman;">Anyway, we will need some
+music. </span></font></small><span
+ style="font-family: times new roman;"><small><font size="+1"><span
+ style="font-family: times new roman;"><span
+ style="color: rgb(0, 0, 0);">If you don't have any music at all </span>you
+can
+download from <a href="http://www.vorbis.com/music.psp">here</a>
+or from <a href="http://freesolopiano.com/music.html">here</a> some
+free stuff. Next create a folder (e.g. <span
+ style="color: rgb(51, 204, 0); font-family: Courier;">'data'</span>)
+inside your python path
+so to keep the needed files during development.</span></font></small></span><small><font
+ size="+1"><br>
+<span style="font-family: times new roman;"></span><br>
+<span style="font-family: times new roman;">Now put a music file (let
+us
+assume it is called <span style="font-family: times new roman;">'Lepidoptera.ogg'</span>)
+inside the
+folder you just created. One more thing though. We need to import the
+'os'
+module (this is a python module, not a pygame one):</span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: courier;">&gt;&gt;&gt; <span
+ style="color: rgb(255, 153, 0);">import</span> os</span></span><br>
+<span style="font-family: times new roman;">Why do that? Because now we
+can
+reference the music file:</span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: courier;">&gt;&gt;&gt; name = os.path.join(<span
+ style="color: rgb(51, 204, 0);">'data'</span>,<span
+ style="color: rgb(51, 204, 0);">'Lepidoptera.ogg'</span>)</span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: courier;">&gt;&gt;&gt; <span
+ style="color: rgb(255, 153, 0);">print</span> name</span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);">data\Lepidoptera.ogg</span></span></span><br
+ style="color: rgb(0, 0, 238);">
+<span style="font-family: times new roman;"><span
+ style="font-family: courier;"></span></span><br>
+<span style="font-family: times new roman;">Of course you can always
+skip the
+'os' part and assign your variable directly:</span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: courier;">name = <span
+ style="color: rgb(51, 204, 0);">'data\Lepidoptera.ogg'</span></span></span><br>
+<span style="font-family: times new roman;"></span><span
+ style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;">&gt;&gt;&gt; <span
+ style="color: rgb(255, 153, 0);">print</span> name</span></span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);">data\Lepidoptera.ogg</span></span></span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"></span></span></span></span><br
+ style="font-family: times new roman; color: rgb(0, 0, 0);">
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);">But the
+'os'
+module has some very useful methods. Anyway. We are now ready for the
+big
+step. To listen to music (with the mixer.music module) we have to load
+the
+music first:</span></span></span></span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);"><span
+ style="font-family: courier;">&gt;&gt;&gt;
+pygame.mixer.music.load(name)</span></span></span></span></span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);"></span></span></span></span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);">And
+finally:</span></span></span></span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);"><span
+ style="font-family: courier;">&gt;&gt;&gt;
+pygame.mixer.music.play()</span></span></span></span></span></span><br
+ style="font-family: courier;">
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);">The <span
+ style="font-family: courier;">'play()'</span> method optionally takes
+two
+parameters. Don't check them out.</span></span></span></span></span><span
+ style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);"></span></span></span></span></span><br>
+<br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);">All the
+other
+methods will remind you of a music player - like winamp. Don't you get
+this
+weird idea to write your own jukebox with pygame?</span></span></span></span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);"></span></span></span></span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);"><span
+ style="font-weight: bold; font-style: italic;">Program
+02.py</span></span></span></span></span></span><br>
+<span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);">The
+following
+program will play a CD (or a DVD) that contains either 'wav' or 'mp3'
+or
+'ogg' files using the 'mixer.music' module. The files can be in various
+folders inside the CD (or the
+DVD).</span></span></span></span></span><br>
+<small>
+</small></font></small></div>
+<font size="+1"><span style="font-family: times new roman;"><span
+ style="font-family: times new roman;"><span
+ style="font-family: courier;"><span style="color: rgb(0, 0, 238);"><span
+ style="font-family: times new roman; color: rgb(0, 0, 0);"></span></span></span></span></span><br>
+</font>
+<table
+ style="text-align: left; height: 100%; width: 100%; background-color: rgb(255, 255, 255);"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; text-align: right; font-family: courier;"><big>1<br>
+2<br>
+3<br>
+4<br>
+5<br>
+6<br>
+7<br>
+8<br>
+9<br>
+10<br>
+11<br>
+12<br>
+13<br>
+14<br>
+15<br>
+16<br>
+17<br>
+18<br>
+19<br>
+20<br>
+21<br>
+22<br>
+23<br>
+24<br>
+25<br>
+26<br>
+27<br>
+28<br>
+29<br>
+30<br>
+31<br>
+32<br>
+33<br>
+34<br>
+35<br>
+36<br>
+37<br>
+38<br>
+39<br>
+40<br>
+41<br>
+42<br>
+43<br>
+44<br>
+45<br>
+46<br>
+      </big></td>
+      <td style="vertical-align: top; font-family: courier;"><big> </big>
+      <div style="text-align: left;"><big> <span
+ style="color: rgb(255, 0, 0);">#
+Pygame_notes 02.py</span><br style="color: rgb(255, 0, 0);">
+      <span style="color: rgb(255, 0, 0);"></span><br>
+      <span style="color: rgb(255, 153, 0);">import</span> os<br>
+      <span style="color: rgb(255, 153, 0);">import</span> random<br>
+      <span style="color: rgb(255, 153, 0);">import</span> pygame.cdrom<br>
+      <span style="color: rgb(255, 153, 0);">import</span> pygame.mixer<br>
+      <br>
+songlist = []<br>
+      <br>
+      <span style="color: rgb(255, 153, 0);">def</span> <span
+ style="color: rgb(0, 0, 238);">get_songs</span>(p):<br>
+&nbsp;&nbsp;&nbsp; a = os.listdir(p)<br>
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">for</span> x
+      <span style="color: rgb(255, 153, 0);">in</span> a:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">if</span> x[-4:].upper() == <span
+ style="color: rgb(51, 204, 0);">'.WAV'</span>\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">or</span> x[-4:].upper() == <span
+ style="color: rgb(51, 204, 0);">'.MP3'</span>\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">or</span> x[-4:].upper() == <span
+ style="color: rgb(51, 204, 0);">'.OGG'</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+songlist.append(os.path.join(p,x))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">elif <span
+ style="color: rgb(51, 204, 0);">'.'</span> not in </span>x:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <span
+ style="color: rgb(255, 153, 0);">try</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; new_p = os.path.join(p,x)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; get_songs(new_p)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <span
+ style="color: rgb(255, 153, 0);">except</span> WindowsError:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">continue</span><br>
+      <br>
+      <span style="color: rgb(255, 153, 0);">def</span> <span
+ style="color: rgb(0, 0, 238);">main</span>():<br>
+&nbsp;&nbsp;&nbsp; pygame.cdrom.init()<br>
+&nbsp;&nbsp;&nbsp; a = pygame.cdrom.CD(1)<br>
+&nbsp;&nbsp;&nbsp; drv_name = a.get_name()<br>
+&nbsp;&nbsp;&nbsp; get_songs(drv_name)<br>
+&nbsp;&nbsp;&nbsp; random.shuffle(songlist)<br>
+&nbsp;&nbsp;&nbsp; pygame.mixer.init(22050,-16,2,2048)<br>
+&nbsp;&nbsp;&nbsp; <span style="color: rgb(255, 153, 0);">for</span>
+song <span style="color: rgb(255, 153, 0);">in</span> songlist:<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span style="color: rgb(255, 153, 0);">try<span
+ style="color: rgb(0, 0, 0);">:</span></span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pygame.mixer.music.load(song)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">print</span><span
+ style="color: rgb(51, 204, 0);">'Now playing......'</span>,song<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pygame.mixer.music.play()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">while</span>
+pygame.mixer.music.get_busy():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(255, 153, 0);">pass</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">except</span> RuntimeError:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">print</span><span
+ style="color: rgb(51, 204, 0);">'Could not load...'</span>,song<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="color: rgb(255, 153, 0);">continue</span><br>
+&nbsp;&nbsp;&nbsp; pygame.mixer.quit()<br>
+&nbsp;&nbsp;&nbsp; a.quit()<br>
+&nbsp;&nbsp;&nbsp; a = None<br>
+&nbsp;&nbsp;&nbsp; pygame.cdrom.quit()<br>
+      <br>
+      <span style="color: rgb(255, 153, 0);">if</span> __name__ == <span
+ style="color: rgb(51, 204, 0);">'__main__'</span>: main()</big></div>
+      <big> </big></td>
+    </tr>
+  </tbody>
+</table>
+<font size="+1"><span style="font-family: times new roman;"><span
+ style="font-style: italic; font-weight: bold;"><br>
+</span></span></font>
+<div style="text-align: justify;"><font size="+1"><span
+ style="font-family: times new roman;"><span
+ style="font-style: italic; font-weight: bold;">Explanation</span></span></font><br>
+<font size="+1"><span style="font-family: times new roman;">First we
+import
+the modules and declare an empty list (lines 3-8).</span><span
+ style="font-family: times new roman;"> The <span
+ style="font-family: Courier;">'<span style="color: rgb(0, 0, 238);">main</span>()'</span>
+function is next. We
+initialize
+the cdrom module (line 25) so to create a CD object (line 26). The 1
+inside
+the parentheses stands for the second drive of your computer. You can
+change
+that into 0 if you want to use your first drive, or if you have a third
+drive
+and you want to use that, then you must change the 1 into 2. Anyway. If
+you
+don't understand what I am trying to say here, then please read 'The
+cdrom
+module and the CD object' chapter. The reason we made the CD object is
+to get
+its name (line 27). We then (line 28) call the <span
+ style="font-family: Courier;">'<span style="color: rgb(0, 0, 238);">get_songs</span>()'</span>
+function which is
+the real juice here.</span></font><br>
+</div>
+<div style="text-align: justify;">
+<div style="text-align: justify;"><font size="+1"><span
+ style="font-family: times new roman;"></span><span
+ style="font-family: times new roman;"></span></font><br>
+</div>
+<font size="+1"><span style="font-family: times new roman;"></span><span
+ style="font-family: times new roman;">The <span
+ style="font-family: Courier;">'<span style="color: rgb(0, 0, 238);">get_songs</span>()'</span>
+function takes the
+name of
+the CD (for example </span><span
+ style="font-family: courier new; color: rgb(51, 204, 0);">'E:\\'</span><span
+ style="font-family: times new roman;"> ) as a parameter. It then gets
+the
+contents of this address with the <span style="font-family: Courier;">'os.listdir()'</span>
+function (line 11). The contents are being searched inside a <span
+ style="font-family: courier new; color: rgb(255, 153, 0);">for</span>
+loop
+(line 12) for 'wav' or 'mp3' or 'ogg' files (lines
+13-15). Every time a file of that type is found, its address gets
+appended to the songlist with the <span style="font-family: Courier;">os.path.join()</span>
+method (line 16).
+In the
+case of a
+folder, the function gets its address and calls itself using this
+address as
+the parameter (lines 19-20). So eventually all the files of the CD (or
+the
+DVD - or any folder actually) will be checked and the songlist will
+include
+the addresses of the music files (if any). The <span
+ style="font-family: courier; color: rgb(255, 153, 0);">try-except</span>
+block is necessary in
+case of a file that does not have an extension and therefore can be
+treated (by mistake) as a folder.</span><br>
+<span style="font-family: times new roman;"></span><br>
+<span style="font-family: times new roman;">Back to our </span><span
+ style="font-family: times new roman;"><span
+ style="font-family: Courier;">'<span style="color: rgb(0, 0, 238);">main</span>()'</span>
+function, the songlist
+gets
+shuffled (line 29), the mixer module is being initialized (line 30) and
+finally the songs are being played inside a <span
+ style="font-family: courier new; color: rgb(255, 153, 0);">try-except</span>
+block
+</span></font><span style="font-family: times new roman;"><font
+ size="+1"><span style="font-family: times new roman;">(lines 31-40)</span></font></span><small><font
+ size="+1"><span style="font-family: times new roman;">. The reason for
+this second <span
+ style="font-family: courier; color: rgb(255, 153, 0);">try-except</span>
+block is that pygame is not always that good for playing mp3 files.</span><br>
+<span style="font-family: times new roman;"></span><br>
+It is best that you run this program directly by double clicking on its
+icon
+- not from the IDLE. That way if you want to stop it you just close the
+DOS box. <span style="font-family: times new roman;">Please mind my VB
+style of
+coding, especially in the </span><small>
+<span style="font-family: times new roman;"><big><span
+ style="font-family: Courier;">'<span style="color: rgb(0, 0, 238);">get_songs</span>()'</span>
+function.<br>
+<br>
+<br>
+</big></span></small></font></small>
+<div style="text-align: right;"><small><font size="+1"><small><span
+ style="font-family: times new roman;"></span></small></font></small><big><a
+ href="The%20cdrom%20module%20and%20the%20CD%20object.html">Back</a>&nbsp;&nbsp;&nbsp;
+<a href="Index.html">Up</a>&nbsp;&nbsp;&nbsp; <a
+ href="The%20mixer%20module,%20the%20sound%20object%20and%20the%20channel%20object.html">Next</a></big><small><font
+ size="+1"><small><span style="font-family: times new roman;"></span></small></font></small></div>
+<small><font size="+1"><small><span
+ style="font-family: times new roman;"></span></small></font></small></div>
+</body>
+</html>

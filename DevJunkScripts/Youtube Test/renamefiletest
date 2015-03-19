@@ -1,0 +1,25 @@
+#import urllib.request
+#import ssl
+#https_sslv3_handler = urllib.request.HTTPSHandler(context=ssl.SSLContext(ssl.PROTOCOL_SSLv3))
+#opener = urllib.request.build_opener(https_sslv3_handler)
+#urllib.request.install_opener(opener)
+#urllib.request.urlopen('https://fed.princeton.edu')
+#watch?v=etAIpkdhU9Q
+# 
+
+import vlc
+import sys
+import youtube_dl
+import os
+
+def down(a):
+	b="https://www.youtube.com/"+a
+	c=a[8:]
+	print(a)
+	print(b)
+	print(c)
+	
+	os.rename(c, c+".mp3")	
+
+if __name__ == "__main__":
+	down(sys.argv[1])
