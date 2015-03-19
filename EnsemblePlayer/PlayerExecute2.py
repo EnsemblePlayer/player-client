@@ -52,17 +52,17 @@ def main():
 				prevStatus=status
 		if(int(service) == 1):
 			if dataBaseID == uniqueID:
-				pass
+				checkPlayerStatus()
 			else:
 				print("Type=Google")
-				playGoogleSong(shouldBePlayingID,streampath,volume)
+				playGoogleSong(streampath,volume)
 				uniqueID=dataBaseID
 		elif(int(service) == 0):
 			if dataBaseID == uniqueID:
-				pass
+				checkPlayerStatus()
 			else:
 				print("Type=YT")
-				playYTSong(shouldBePlayingID,volume)
+				playYTSong(streampath,volume)
 				uniqueID=dataBaseID
 		elif(service == 2):
 			print("Type=SPOT")
@@ -72,7 +72,7 @@ def main():
 		else:
 			print("server error or unrecognised")
 	elif(int(status) == 0):
-		p.set_pause(True)
+		pygame.mixer.music.pause()
 		if(int(prevStatus)!=int(status)):
 			print("Currently paused")
 			prevStatus=status
@@ -83,6 +83,12 @@ def main():
 			print("Currently paused For Good")
 			prevStatus=status
 
+def checkPlayerStatus():
+	if(int(status)==0)#paused
+		return
+	if(not pygame.mixer.music.get_busy()) #not busy
+		sendNextSong()
+			
 def serverQuery(id,nextSong):
 	#{"entryId":185,"service":0,"username":null,"password":null,"apiId":0,"status":1}
 	try:
@@ -90,6 +96,7 @@ def serverQuery(id,nextSong):
 	except:
 		print("Error: Server didn't respond?")
 	j_obj = json.load(response)
+	print(j_obj)
 	global service
 	global status
 	global dataBaseID
@@ -103,11 +110,14 @@ def serverQuery(id,nextSong):
 	songName = j_obj['songName']
 	artist = j_obj['artist']
 			
-def playGoogleSong(songID,path,vol):	
+def playGoogleSong(path,vol):	
 	global currentSongID
-	currentSongID=songID
+	currentSongID=path
 	fileName = cleanFile()
-	urllib.urlretrieve(path,fileName)
+	try:
+		urllib.urlretrieve(path,fileName)
+	except:
+		sendNextSong()
 	playSong(fileName,vol)
 	print ("Google: Now Playing " + songName + " by " + artist)
 		
