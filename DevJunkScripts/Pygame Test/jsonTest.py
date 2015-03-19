@@ -27,7 +27,8 @@ def serverQuery(id,nextSong):
 	j_obj = json.load(response)
 	
 	global service
-	
+	global status
+	global dataBaseID
 	
 	service = j_obj['service']
 	status = j_obj['status']
