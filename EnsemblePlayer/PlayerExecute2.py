@@ -6,6 +6,7 @@ import urllib2
 import urllib
 import warnings
 import pygame.mixer
+import json
 
 global replay
 global prevStatus
@@ -39,7 +40,7 @@ def main():
 	global uniqueID
 	
 	serverQuery(PlayerID,nextSong)
-	
+	print("cycle")
 	if((nextSong == 1)and(uniqueID!=dataBaseID)):
 		nextSong=0
 	if(int(status)==1):
@@ -139,7 +140,7 @@ def playYTSong(songID,vol):
 		fileName = cleanFile()
 		down(songID,fileName)
 	playSong(fileName,vol)
-	print("YT: Now Playing " + songName + " by " + artist")
+	print("YT: Now Playing " + songName + " by " + artist)
 	
 def down(a,fileName):
 	try:
