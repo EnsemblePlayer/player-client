@@ -84,19 +84,18 @@ def main():
 			prevStatus=status
 
 def checkPlayerStatus():
-	if(int(status)==0)#paused
+	if(int(status)==0):#paused
 		return
-	if(not pygame.mixer.music.get_busy()) #not busy
+	if(not pygame.mixer.music.get_busy()): #not busy
 		sendNextSong()
 			
 def serverQuery(id,nextSong):
 	#{"entryId":185,"service":0,"username":null,"password":null,"apiId":0,"status":1}
 	try:
-		response = urllib2.urlopen('http://198.143.136.133//api/player.php?id='+str(id)+'&next='+str(nextSong))
+		response = urllib2.urlopen('http://198.143.136.133//dev/api/player.php?id='+str(id)+'&next='+str(nextSong))
 	except:
 		print("Error: Server didn't respond?")
 	j_obj = json.load(response)
-	print(j_obj)
 	global service
 	global status
 	global dataBaseID
@@ -116,9 +115,9 @@ def playGoogleSong(path,vol):
 	fileName = cleanFile()
 	try:
 		urllib.urlretrieve(path,fileName)
+		playSong(fileName,vol)
 	except:
 		sendNextSong()
-	playSong(fileName,vol)
 	print ("Google: Now Playing " + songName + " by " + artist)
 		
 def sendNextSong():
@@ -178,5 +177,8 @@ def down(a,fileName):
 
 if(__name__ == "__main__"):
 	warnings.filterwarnings("ignore")
+	pygame.mixer.init(22050,-16,2,2048)
+	cleanFile()
+	cleanFile()
 	while True:
 		main()
