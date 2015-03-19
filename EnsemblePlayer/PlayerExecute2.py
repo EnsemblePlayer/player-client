@@ -40,7 +40,6 @@ def main():
 	global uniqueID
 	
 	serverQuery(PlayerID,nextSong)
-	print("cycle")
 	if((nextSong == 1)and(uniqueID!=dataBaseID)):
 		nextSong=0
 	if(int(status)==1):
@@ -90,7 +89,6 @@ def checkPlayerStatus():
 		sendNextSong()
 			
 def serverQuery(id,nextSong):
-	#{"entryId":185,"service":0,"username":null,"password":null,"apiId":0,"status":1}
 	try:
 		response = urllib2.urlopen('http://198.143.136.133//dev/api/player.php?id='+str(id)+'&next='+str(nextSong))
 	except:
@@ -144,10 +142,9 @@ def playSong(song,vol):
 
 def playYTSong(songID,vol):
 	global currentSongID
-	if(currentSongID!=songID):
-		currentSongID=songID
-		fileName = cleanFile()
-		down(songID,fileName)
+	currentSongID=songID
+	fileName = cleanFile()
+	down(songID,fileName)
 	playSong(fileName,vol)
 	print("YT: Now Playing " + songName + " by " + artist)
 	
@@ -172,8 +169,10 @@ def down(a,fileName):
 		with youtube_dl.YoutubeDL(options) as ydl:
 			ydl.download([b])
 		os.rename(a, fileName)
+		return
 	except:
 		sendNextSong()
+	return
 
 if(__name__ == "__main__"):
 	warnings.filterwarnings("ignore")
