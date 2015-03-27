@@ -21,6 +21,8 @@ global oddEven
 global songName
 global artist
 global volume
+global startTime
+global maxTime
 #device
 PlayerID=1
 nextSong=0
@@ -29,7 +31,7 @@ currentSongID="0"
 uniqueID=0
 replay = False	
 oddEven = False
-volume = .5;						
+volume = .3
 #status 1=play 0=pause
 #service 1=Gp 0=YT 2=SPOT
 
@@ -42,6 +44,7 @@ def main():
 	serverQuery(PlayerID,nextSong)
 	if((nextSong == 1)and(uniqueID!=dataBaseID)):
 		nextSong=0
+		print "next song reset"
 	if(int(status)==1):
 		if(replay):
 			pygame.mixer.music.unpause()
@@ -86,13 +89,22 @@ def checkPlayerStatus():
 	if(int(status)==0):#paused
 		return
 	if(not pygame.mixer.music.get_busy()): #not busy
-		sendNextSong()
+		if((time.time()-startTime)>=maxTime):
+			print "song finished"
+			sendNextSong()
 			
 def serverQuery(id,nextSong):
-	try:
-		response = urllib2.urlopen('http://198.143.136.133//dev/api/player.php?id='+str(id)+'&next='+str(nextSong))
-	except:
-		print("Error: Server didn't respond?")
+	count = 0
+	while (count<100):
+		try:
+			response = urllib2.urlopen('http://198.143.136.133//dev/api/player.php?id='+str(id)+'&next='+str(nextSong))
+			count=101
+		except:
+			print("Error: Server didn't respond?")
+			print("Trying again")
+			count+=1
+	if(count==100):
+		return
 	j_obj = json.load(response)
 	global service
 	global status
@@ -106,15 +118,21 @@ def serverQuery(id,nextSong):
 	streampath = j_obj['url']
 	songName = j_obj['songName']
 	artist = j_obj['artist']
+	global maxTime
+	maxTime=0
+	#maxTime = j_obj['length']
 			
 def playGoogleSong(path,vol):	
 	global currentSongID
 	currentSongID=path
 	fileName = cleanFile()
+	global startTime
 	try:
 		urllib.urlretrieve(path,fileName)
 		playSong(fileName,vol)
+		startTime = time.time()
 	except:
+		print "error playing google song"
 		sendNextSong()
 	print ("Google: Now Playing " + songName + " by " + artist)
 		
@@ -146,8 +164,18 @@ def playYTSong(songID,vol):
 	fileName = cleanFile()
 	down(songID,fileName)
 	playSong(fileName,vol)
+	global startTime
+	startTime = time.time()
 	print("YT: Now Playing " + songName + " by " + artist)
 	
+def delay(seconds):
+	print "enter delay"
+	thisTime = time.time()
+	while((thisTime+seconds)>time.time()):
+		pass
+	print "exit delay"
+	return
+
 def down(a,fileName):
 	try:
 		os.remove(a)
@@ -171,6 +199,7 @@ def down(a,fileName):
 		os.rename(a, fileName)
 		return
 	except:
+		print "error downloading YT song"
 		sendNextSong()
 	return
 
