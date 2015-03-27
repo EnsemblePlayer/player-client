@@ -1,7 +1,6 @@
 import youtube_dl
 import os
 import pygame.mixer
-import audiotools
 
 #pygame.mixer.init(44100,-16,2,4096)
 pygame.mixer.init(22050,8,2,2048)
@@ -40,7 +39,7 @@ def down(a,fileName):
 		options = {
 				'format': 'bestaudio', 		# choice of quality
 				'extractaudio' : True,      # only keep the audio
-				'audioformat' : "aac",      # convert to mp3 
+				'audioformat' : "mp3",      # convert to mp3 
 				'outtmpl': '%(id)s',		# name the file the ID of the video
 				'noplaylist' : True,        # only download single song, not playlist
 			}
@@ -67,7 +66,7 @@ def cleanFile():
 	global oddEven
 	fileName = "even.aac"
 	if(oddEven):
-		fileName = "odd.aac"
+		fileName = "googleworks.mp3"
 	oddEven= not oddEven
 	try:
 		os.remove(fileName)
