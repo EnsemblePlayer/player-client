@@ -1,5 +1,6 @@
 import os
 import pygame.mixer
+from subprocess import call
 
 pygame.mixer.init(44100,-16,2,4096)
 #pygame.mixer.init(22050,8,2,2048)
@@ -26,7 +27,8 @@ def playSong(song,vol):
 	pygame.mixer.music.play()
 
 def playYTSong(songID,vol):
-	fileName = "new.mp3"
+	fileName = "newtwo.mp3"
+	call(["ffmpeg", "-i","odd.aac",fileName])
 	playSong(fileName,vol)
 	print("YT: Now Playing " + songName + " by " + artist)
 	
