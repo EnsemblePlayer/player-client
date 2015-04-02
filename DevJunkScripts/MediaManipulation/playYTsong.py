@@ -1,8 +1,8 @@
 import os
 import pygame.mixer
 
-#pygame.mixer.init(44100,-16,2,4096)
-pygame.mixer.init(22050,8,2,2048)
+pygame.mixer.init(44100,-16,2,4096)
+#pygame.mixer.init(22050,8,2,2048)
 
 global songName
 global artist
@@ -26,7 +26,7 @@ def playSong(song,vol):
 	pygame.mixer.music.play()
 
 def playYTSong(songID,vol):
-	fileName = "odd.aac"
+	fileName = "new.mp3"
 	playSong(fileName,vol)
 	print("YT: Now Playing " + songName + " by " + artist)
 	
