@@ -7,6 +7,7 @@ import urllib
 import warnings
 import pygame.mixer
 import json
+from subprocess import call
 
 global replay
 global prevStatus
@@ -190,13 +191,13 @@ def down(a,fileName):
 		options = {
 				'format': 'bestaudio', 		# choice of quality
 				'extractaudio' : True,      # only keep the audio
-				'audioformat' : "mp3",      # convert to mp3 
+				'audioformat' : "aac",      # convert to aac 
 				'outtmpl': '%(id)s',		# name the file the ID of the video
 				'noplaylist' : True,        # only download single song, not playlist
 			}
 		with youtube_dl.YoutubeDL(options) as ydl:
 			ydl.download([b])
-		os.rename(a, fileName)
+		call(["ffmpeg", "-i",a,fileName])
 		return
 	except:
 		print "error downloading YT song"
@@ -205,7 +206,7 @@ def down(a,fileName):
 
 if(__name__ == "__main__"):
 	warnings.filterwarnings("ignore")
-	pygame.mixer.init(22050,-16,2,2048)
+	pygame.mixer.init(44100,-16,2,4096)
 	cleanFile()
 	cleanFile()
 	while True:
