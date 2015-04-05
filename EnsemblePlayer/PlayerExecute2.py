@@ -32,7 +32,7 @@ currentSongID="0"
 uniqueID=0
 replay = False	
 oddEven = False
-volume = .3
+volume = .05
 #status 1=play 0=pause
 #service 1=Gp 0=YT 2=SPOT
 
@@ -96,15 +96,15 @@ def checkPlayerStatus():
 			
 def serverQuery(id,nextSong):
 	count = 0
-	while (count<100):
+	while (count<5):
 		try:
 			response = urllib2.urlopen('http://198.143.136.133//dev/api/player.php?id='+str(id)+'&next='+str(nextSong))
-			count=101
+			count=6
 		except:
 			print("Error: Server didn't respond?")
 			print("Trying again")
 			count+=1
-	if(count==100):
+	if(count==5):
 		return
 	j_obj = json.load(response)
 	global service
@@ -130,6 +130,9 @@ def playGoogleSong(path,vol):
 	global startTime
 	try:
 		urllib.urlretrieve(path,fileName)
+	except:
+		print "error downloading google song"
+	try:
 		playSong(fileName,vol)
 		startTime = time.time()
 	except:
@@ -151,7 +154,7 @@ def cleanFile():
 	try:
 		os.remove(fileName)
 	except:
-		pass
+		print "error cleaning file"
 	return fileName
 	
 def playSong(song,vol):
@@ -198,6 +201,10 @@ def down(a,fileName):
 		with youtube_dl.YoutubeDL(options) as ydl:
 			ydl.download([b])
 		call(["ffmpeg", "-i",a,fileName])
+		try:
+			os.remove(a)
+		except:
+			pass
 		return
 	except:
 		print "error downloading YT song"
