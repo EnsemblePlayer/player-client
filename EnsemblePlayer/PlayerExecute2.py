@@ -98,7 +98,7 @@ def serverQuery(id,nextSong):
 	count = 0
 	while (count<5):
 		try:
-			response = urllib2.urlopen('http://198.143.136.133//dev/api/player.php?id='+str(id)+'&next='+str(nextSong))
+			response = urllib2.urlopen('http://198.143.136.133//api/player.php?id='+str(id)+'&next='+str(nextSong))
 			count=6
 		except:
 			print("Error: Server didn't respond?")
@@ -152,12 +152,14 @@ def cleanFile():
 		fileName = "odd.mp3"
 	oddEven= not oddEven
 	try:
+		print "removing "+fileName+" file"
 		os.remove(fileName)
 	except:
-		print "error cleaning file"
+		print "error cleaning "+str(fileName)+" file"
 	return fileName
 	
 def playSong(song,vol):
+	print "Playing "+str(song)
 	pygame.mixer.music.load(song)
 	pygame.mixer.music.set_volume(vol)
 	pygame.mixer.music.play()
@@ -212,7 +214,7 @@ def down(a,fileName):
 	return
 
 if(__name__ == "__main__"):
-	warnings.filterwarnings("ignore")
+	#warnings.filterwarnings("ignore")
 	pygame.mixer.init(44100,-16,2,4096)
 	cleanFile()
 	cleanFile()
