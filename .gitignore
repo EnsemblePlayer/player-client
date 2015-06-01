@@ -1,3 +1,3 @@
-*.pyc
-*.mp3
-log.txt
+$ cat .gitignore
+
+DevJunkScripts/*
