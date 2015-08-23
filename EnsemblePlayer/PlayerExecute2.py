@@ -98,7 +98,7 @@ def serverQuery(id,nextSong):
 	count = 0
 	while (count<5):
 		try:
-			response = urllib2.urlopen('http://198.143.136.133//api/player.php?id='+str(id)+'&next='+str(nextSong))
+			response = urllib2.urlopen('http://198.143.136.133//dev/api/player.php?id='+str(id)+'&next='+str(nextSong))
 			count=6
 		except:
 			print("Error: Server didn't respond?")
